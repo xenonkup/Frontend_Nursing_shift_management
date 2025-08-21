@@ -38,11 +38,7 @@ interface LeaveRequest {
     requestedAt: string;
 }
 
-interface HeadNurseDashboardProps {
-    user: User | null; // เปลี่ยนเป็นค่าว่างได้
-}
-
-export default function HeadNurseDashboard({ user: propUser }: HeadNurseDashboardProps) {
+export default function HeadNurseDashboard() {
     const [activeTab, setActiveTab] = useState<"shifts" | "create" | "requests">("shifts");
     const [shifts, setShifts] = useState<Shift[]>([]);
     const [nurses, setNurses] = useState<Nurse[]>([]);
@@ -56,11 +52,11 @@ export default function HeadNurseDashboard({ user: propUser }: HeadNurseDashboar
     });
     const router = useRouter();
 
-    // สถานะในการจัดการผู้ใช้จาก localStorage หรือ props
-    const [user, setUser] = useState<User | null>(propUser || null);
+    // สถานะในการจัดการผู้ใช้จาก localStorage
+    const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
-        if (!propUser && typeof window !== "undefined") {
+        if (typeof window !== "undefined") {
             const storedUser = localStorage.getItem("user");
             if (storedUser) {
                 setUser(JSON.parse(storedUser));
@@ -68,7 +64,7 @@ export default function HeadNurseDashboard({ user: propUser }: HeadNurseDashboar
                 setTimeout(() => router.push("/signin"), 0);
             }
         }
-    }, [propUser, router]);
+    }, [router]);
 
     // ดึง Data
     const fetchData = useCallback(async () => {

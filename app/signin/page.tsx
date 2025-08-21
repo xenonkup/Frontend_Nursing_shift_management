@@ -15,11 +15,7 @@ export interface User {
     token: string;
 }
 
-interface LoginProps {
-    onLogin?: (user: User) => void; // เปลี่ยนเป็น optional prop
-}
-
-export default function Signin({ onLogin }: LoginProps = {}) {
+export default function Signin() {
     const router = useRouter();
     const [user, setUser] = useState<User | null>(null);
     const [username, setUsername] = useState("");
@@ -65,10 +61,6 @@ export default function Signin({ onLogin }: LoginProps = {}) {
                 token,
             };
             setUser(normalizedUser);
-            // เรียก onLogin เฉพาะเมื่อมีค่าและเป็นฟังก์ชัน
-            if (onLogin && typeof onLogin === "function") {
-                onLogin(normalizedUser);
-            }
             localStorage.setItem("user", JSON.stringify(normalizedUser));
             // ตัวบทบาทสิทธิเข้าถึง หน้าที่จัดไว้
             const role = normalizedUser.role.toLowerCase();
