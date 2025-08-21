@@ -16,11 +16,7 @@ interface Shift {
     description?: string;
 }
 
-interface NurseDashboardProps {
-    user: User | null; // Allow user to be null
-}
-
-export default function NurseDashboard({ user: propUser }: NurseDashboardProps) {
+export default function NurseDashboard() {
     const [shifts, setShifts] = useState<Shift[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [notification, setNotification] = useState<{ message: string; type: "success" | "error" } | null>(null);
@@ -31,9 +27,10 @@ export default function NurseDashboard({ user: propUser }: NurseDashboardProps) 
     const router = useRouter();
 
     // ดึง user จาก localStorage หาก propUser เป็น null
-    const [user, setUser] = useState<User | null>(propUser || null);
+    // ดึง user จาก localStorage
+    const [user, setUser] = useState<User | null>(null);
     useEffect(() => {
-        if (!propUser && typeof window !== "undefined") {
+        if (typeof window !== "undefined") {
             const storedUser = localStorage.getItem("user");
             if (storedUser) {
                 setUser(JSON.parse(storedUser));
@@ -41,7 +38,7 @@ export default function NurseDashboard({ user: propUser }: NurseDashboardProps) 
                 setError("กรุณาล็อกอินก่อนใช้งาน");
             }
         }
-    }, [propUser]);
+       }, []);
 
     const fetchShifts = useCallback(async () => {
         if (!user?.token) {
