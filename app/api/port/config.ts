@@ -1,5 +1,8 @@
+// API Configuration with Environment Variable support
 export const config = {
-    apiUrl: 'http://localhost:3001/api'
+    // Use environment variable if available, fallback to localhost for development
+    apiUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001/api',
+    baseUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
 }
 
-// กำหนด URL ของ Backend API ที่อยู่ที่ port 3001
+// กำหนด URL ของ Backend API ที่รองรับทั้ง development และ production
